@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
   import DefaultExport from "react-youtube";
   import "@notifi-network/notifi-react/dist/index.css";
   import NotifiContextProvider from "../NotifiContextProvider.svelte";
   import NotifiCardModal from "../NotifiCardModal.svelte";
   import { MetaMaskStore } from "$lib";
   import { onMount } from "svelte";
+  import { Buffer } from 'buffer'
+  import NotifiUnreadCount from "../NotifiUnreadCount.svelte";
+  globalThis.Buffer = Buffer
   // @ts-ignore
   let YouTube = DefaultExport.default || DefaultExport; 
   /* Client imports dist/YouTube.esm.js but the Server imports dist/YouTube.js from react-youtube. above ⬆️ fix is to make sure this wont break server code.
@@ -16,6 +19,27 @@
   onMount(() => {
     init();
   });
+
+  // const account = $walletState.account;
+  const signMessage = async (message: Uint8Array): Promise<Uint8Array> => {
+    const messageString = Buffer.from(message).toString('utf8');
+    console.log(1)
+    const result = await signArbitrary(
+      messageString,
+    );
+    console.log(2)
+    return getBytes(result);
+  };
+
+  const getBytes = (value: `0x${string}`): Uint8Array => {
+        const result = new Uint8Array((value.length - 2) / 2);
+        let offset = 2;
+        for (let i = 0; i < result.length; i++) {
+            result[i] = parseInt(value.substring(offset, offset + 2), 16);
+            offset += 2;
+        }
+        return result;
+  };
 </script>
 
 <h1>Welcome to Notifi Card Modal example powered by SvelteKit</h1>
@@ -23,11 +47,18 @@
 
 <react:YouTube videoId="uH6aRpwTEF0" />
 
+<h2>NotifiCardModal react component integration example</h2>
 {#if $loaded}
   {#if $isMetaMaskPresent}
     {#if Boolean($walletState.account)}
-      <p>{$walletState.account}</p>
-      <button on:click={ ()=>signArbitrary("Sign a test message")} >sign message</button>
+      <p>User wallet: {$walletState.account}</p>
+      <div class="notifi-card-modal">
+
+        <NotifiContextProvider signMessage={ signMessage}  walletPublicKey={$walletState.account} walletBlockchain={"ETHEREUM"} tenantId={"4zfoga0vjqh90ahg8apd"} cardId={"90f9ac3f674a4a79955204afc1142a39"} env={"Production"}>
+          <NotifiUnreadCount />
+          <NotifiCardModal darkMode={true} />
+        </NotifiContextProvider>
+      </div>
     {:else}
       <button on:click={connect}>Connect Metamask Wallet</button>
     {/if}
@@ -38,13 +69,6 @@
   <p>Loading...</p>
 {/if}
 
-<h2>NotifiCardModal react component integration example</h2>
-
-<div class="notifi-card-modal">
-  <NotifiContextProvider>
-    <NotifiCardModal darkMode={true} />
-  </NotifiContextProvider>
-</div>
 
 <style>
   .notifi-card-modal {
