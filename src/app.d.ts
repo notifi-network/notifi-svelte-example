@@ -1,13 +1,10 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
-	namespace App {
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
-		// interface PageState {}
-		// interface Platform {}
-	}
+  interface Window {
+    ethereum: any; // TODO: Define the type (Could use ether.js). Use any for now for now for simplicity
+  }
+  namespace App {}
 }
 
 export {};
