@@ -1,10 +1,8 @@
 <script>
   import DefaultExport from "react-youtube";
-  import {
-  NotifiContextProvider,
-  NotifiCardModal,
-  } from "@notifi-network/notifi-react";
   import "@notifi-network/notifi-react/dist/index.css";
+  import NotifiContextProvider from "../NotifiContextProvider.svelte";
+  import NotifiCardModal from "../NotifiCardModal.svelte";
   import { MetaMaskStore } from "$lib";
   import { onMount } from "svelte";
   // @ts-ignore
@@ -19,7 +17,12 @@
     init();
   });
 </script>
-<react:YouTube videoId="AdNJ3fydeao" />
+
+<h1>Welcome to Notifi Card Modal example powered by SvelteKit</h1>
+<p>Visit <a href="https://docs.notifi.network/docs">notifi.network</a> to read the documentation</p>
+
+<react:YouTube videoId="uH6aRpwTEF0" />
+
 {#if $loaded}
   {#if $isMetaMaskPresent}
     {#if Boolean($walletState.account)}
@@ -34,15 +37,18 @@
 {:else}
   <p>Loading...</p>
 {/if}
-<react:NotifiContextProvider notifiContextProvider
-    tenantId="4zfoga0vjqh90ahg8apd"
-    env="Production"
-    walletBlockchain="ETHEREUM"
-    walletPublicKey="0xc8451882B5ec5A532cDcA3E07A311274f6C897ad"
-    signMessage={() => new Uint8Array([])}
-    cardId="90f9ac3f674a4a79955204afc1142a39"
-  >
-  <react:NotifiCardModal darkMode />
-</react:NotifiContextProvider>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<h2>NotifiCardModal react component integration example</h2>
+
+<div class="notifi-card-modal">
+  <NotifiContextProvider>
+    <NotifiCardModal darkMode={true} />
+  </NotifiContextProvider>
+</div>
+
+<style>
+  .notifi-card-modal {
+    font-family: 'Arial', sans-serif;
+    width: 23rem;
+  }
+</style>
