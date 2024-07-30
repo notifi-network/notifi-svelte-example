@@ -5,6 +5,12 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [sveltekit()],
+  server: {
+    fs: {
+      // Allow serving files from one level up to the project root
+      allow: [".yalc"],
+    },
+  },
   optimizeDeps: {
     esbuildOptions: {
       define: {
