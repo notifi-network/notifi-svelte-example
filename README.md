@@ -18,6 +18,8 @@ Open up [localhost:3000](http://localhost:3000) in your browser and you should s
 
 > NOTE: You need to have a Notifi Tenant account to kickstart the project. You can create a tenant account through [Notifi Admin Portal](https://admin.notifi.network/)
 
-## Demo video
+## [Demo video](https://i.imgur.com/tWIhx1d.mp4)
 
-<video src="https://i.imgur.com/tWIhx1d.mp4" width="560" height="315" controls></video>
+
+https://github.com/user-attachments/assets/8430c0cf-169e-4cce-bd79-f03ab8cb26f0
+
