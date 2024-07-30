@@ -7,6 +7,8 @@
   import { onMount } from "svelte";
   import { Buffer } from 'buffer'
   import NotifiUnreadCount from "../NotifiUnreadCount.svelte";
+  import { PUBLIC_TENANT_ID ,PUBLIC_ENV,PUBLIC_CARD_ID } from '$env/static/public';
+
   globalThis.Buffer = Buffer
   // @ts-ignore
   let YouTube = DefaultExport.default || DefaultExport; 
@@ -23,11 +25,9 @@
   // const account = $walletState.account;
   const signMessage = async (message: Uint8Array): Promise<Uint8Array> => {
     const messageString = Buffer.from(message).toString('utf8');
-    console.log(1)
     const result = await signArbitrary(
       messageString,
     );
-    console.log(2)
     return getBytes(result);
   };
 
@@ -53,8 +53,7 @@
     {#if Boolean($walletState.account)}
       <p>User wallet: {$walletState.account}</p>
       <div class="notifi-card-modal">
-
-        <NotifiContextProvider signMessage={ signMessage}  walletPublicKey={$walletState.account} walletBlockchain={"ETHEREUM"} tenantId={"4zfoga0vjqh90ahg8apd"} cardId={"90f9ac3f674a4a79955204afc1142a39"} env={"Production"}>
+        <NotifiContextProvider signMessage={ signMessage}  walletPublicKey={$walletState.account} walletBlockchain={"ETHEREUM"} tenantId={PUBLIC_TENANT_ID} cardId={PUBLIC_CARD_ID} env={PUBLIC_ENV}>
           <NotifiUnreadCount />
           <NotifiCardModal darkMode={true} />
         </NotifiContextProvider>
